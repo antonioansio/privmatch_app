@@ -86,7 +86,7 @@ async function main() {
     ),
   );
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 38; i++) {
     const city = faker.helpers.arrayElement(cityData);
     const subarea = faker.helpers.arrayElement(subareasByCity[city.id]);
 
@@ -118,13 +118,22 @@ async function main() {
       },
     });
 
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
     await db.image.createMany({
       data: [
-        { url: 'https://placehold.co/360x540', girlId: girl.id, isPrimary: true },
-        { url: 'https://placehold.co/360x540', girlId: girl.id, isPrimary: false },
-        { url: 'https://placehold.co/360x540', girlId: girl.id, isPrimary: false },
-        { url: 'https://placehold.co/360x540', girlId: girl.id, isPrimary: false },
-        { url: 'https://placehold.co/360x540', girlId: girl.id, isPrimary: false },
+        { url: `https://placehold.co/360x540/${getRandomColor()}/FFFFFF/png`, girlId: girl.id, isPrimary: true },
+        { url: `https://placehold.co/360x540/${getRandomColor()}/FFFFFF/png`, girlId: girl.id, isPrimary: false },
+        { url: `https://placehold.co/360x540/${getRandomColor()}/FFFFFF/png`, girlId: girl.id, isPrimary: false },
+        { url: `https://placehold.co/360x540/${getRandomColor()}/FFFFFF/png`, girlId: girl.id, isPrimary: false },
+        { url: `https://placehold.co/360x540/${getRandomColor()}/FFFFFF/png`, girlId: girl.id, isPrimary: false },
       ],
     });
 

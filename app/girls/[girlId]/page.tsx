@@ -6,11 +6,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import PriceCircles from '@/components/PriceCircles';
+import ImageViewer from '@/components/ImageViewer';
 
 const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
   const { girlId } = params;
   const [girl, setGirl] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
@@ -30,9 +33,16 @@ const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
         setTimeout(() => setLoading(false), 500);
       }
     };
-
     fetchGirlProfile();
-  }, [girlId]);
+    if (isImageViewerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [girlId, isImageViewerOpen]);
 
   if (loading) {
     return (
@@ -60,12 +70,28 @@ const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
 
   if (!girl) return notFound();
 
+  const openImageViewer = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsImageViewerOpen(true);
+  };
+
+  const closeImageViewer = () => setIsImageViewerOpen(false);
+
+  const nextImage = () => {
+    setCurrentImageIndex(prevIndex => (prevIndex + 1) % girl.images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex(prevIndex => (prevIndex - 1 + girl.images.length) % girl.images.length);
+  };
+
   const center = girl.location
     ? { lat: girl.location.latitude, lng: girl.location.longitude }
     : { lat: 40.416775, lng: -3.70379 };
 
   return (
     <div className="container mx-auto mt-10 px-4 sm:px-0">
+      {/* Detalles del perfil */}
       <div className="mb-6 flex items-center justify-between">
         <h2 className="mb-2 text-3xl font-extrabold text-black">{girl.name}</h2>
         <div className="flex space-x-4">
@@ -89,6 +115,7 @@ const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
       </div>
 
       <div className="mb-10 flex flex-col gap-6 lg:flex-row">
+        {/* Información detallada */}
         <div className="rounded-lg bg-zinc-950 p-4 shadow-lg lg:w-1/3">
           <h2 className="mb-3 text-2xl text-white">Detalles:</h2>
           <p className="mb-2 text-lg font-light text-white">
@@ -154,25 +181,24 @@ const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
             )}
           </div>
         </div>
-
         <div className="rounded-lg bg-zinc-950 p-5 shadow-lg lg:w-2/3">
           <div className="mb-6 grid grid-cols-2 gap-2 md:grid-cols-3">
             {girl.images.length > 0 ? (
-              girl.images.map(image => (
+              girl.images.map((image, index) => (
                 <img
                   key={image.id}
                   src={image.url}
                   alt="Imagen de la escort"
-                  className={`h-full w-full rounded-lg object-cover shadow-md ${
+                  className={`h-full w-full cursor-pointer rounded-lg object-cover shadow-md ${
                     image.isPrimary ? 'border-4 border-yellow-500' : ''
                   }`}
+                  onClick={() => openImageViewer(index)}
                 />
               ))
             ) : (
               <p className="text-lg text-white">No hay imágenes disponibles.</p>
             )}
           </div>
-
           <h2 className="mb-3 text-2xl text-white">Ubicación:</h2>
           <div className="h-72 w-full">
             {isLoaded ? (
@@ -185,6 +211,16 @@ const GirlProfilePage = ({ params }: { params: { girlId: string } }) => {
           </div>
         </div>
       </div>
+
+      {isImageViewerOpen && (
+        <ImageViewer
+          images={girl.images}
+          currentIndex={currentImageIndex}
+          onClose={closeImageViewer}
+          onNext={nextImage}
+          onPrev={prevImage}
+        />
+      )}
     </div>
   );
 };
