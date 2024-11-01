@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Acerca de PrivMatch (v1.0)
 
-## Getting Started
+**PrivMatch** es un proyecto enfocado en la promoción de servicios de acompañantes de lujo en España.
 
-First, run the development server:
+## Capturas de Pantalla
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Main Page**: Muestra una interfaz fácil de navegar, destacando las acompañantes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Main Page](./screenshots/1.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Filter Options**: Permite a los usuarios refinar su búsqueda según preferencias específicas, facilitando la selección del acompañante ideal.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![Filter Options](./screenshots/2.png)
 
-## Learn More
+- **Girl Profile**: Proporciona detalles completos sobre cada acompañante, incluyendo fotografías, descripciones y servicios disponibles.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![Girl Profile](./screenshots/3.png)
