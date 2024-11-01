@@ -15,16 +15,30 @@ const ImageViewer = ({ images, currentIndex, onClose, onNext, onPrev }: ImageVie
         <FaTimes />
       </button>
 
-      <div className="flex items-center">
-        <button onClick={onPrev} className="mr-5 text-3xl text-white">
-          <FaChevronLeft />
-        </button>
+      <div className="flex flex-col items-center">
+        <div className="flex items-center">
+          <button
+            onClick={onPrev}
+            className={`mr-5 text-3xl text-white ${currentIndex === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+            disabled={currentIndex === 0}
+          >
+            <FaChevronLeft />
+          </button>
 
-        <img src={images[currentIndex].url} alt="Imagen ampliada" className="max-h-full max-w-full rounded-lg" />
+          <img src={images[currentIndex].url} alt="Imagen ampliada" className="max-h-full max-w-full rounded-lg" />
 
-        <button onClick={onNext} className="ml-5 text-3xl text-white">
-          <FaChevronRight />
-        </button>
+          <button
+            onClick={onNext}
+            className={`ml-5 text-3xl text-white ${currentIndex === images.length - 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+            disabled={currentIndex === images.length - 1}
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+
+        <div className="mt-3 text-lg text-white">
+          {currentIndex + 1} / {images.length}
+        </div>
       </div>
     </div>
   );
