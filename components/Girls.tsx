@@ -26,6 +26,7 @@ interface GirlFilters {
 interface GirlProfile {
   id: number;
   name: string;
+  slug: string;
   age: number;
   ratePerHour: number;
   createdAt: string;
@@ -116,7 +117,7 @@ const Girls = ({ city = null, subzone = null }: GirlsComponentProps) => {
       <h2 className="mt-8 text-3xl font-extrabold text-black">Escorts</h2>
       <div className="grid grid-cols-2 gap-2 py-6 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         {filteredGirls.map(girl => (
-          <Link key={girl.id} href={`/girls/${girl.id}`}>
+          <Link key={girl.id} href={`/girls/${girl.slug}`}>
             <div className="cursor-pointer rounded-lg bg-zinc-950 p-2 shadow-lg transition-shadow duration-200 hover:shadow-xl">
               {girl.imageUrl ? (
                 <img src={girl.imageUrl} alt={`${girl.name}`} className="mb-4 h-full w-full rounded-lg object-cover" />

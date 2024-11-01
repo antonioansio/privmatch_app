@@ -19,7 +19,7 @@ export async function GET(req: Request, context: { params: { girlId: string } })
     }
 
     const girl = await db.girl.findUnique({
-      where: { id: Number(girlId) },
+      where: { slug: girlId },
       include: {
         services: true,
         city: true,
