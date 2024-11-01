@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Girl {
+  id           Int      @id @default(autoincrement())
+  name         String
+  age          Int?
+  city         City?      @relation(fields: [cityId], references: [id]) 
+  cityId       Int?    
+  subarea      Subarea?   @relation(fields: [subareaId], references: [id])
+  subareaId    Int?     
+  address      String?    
+  postalCode   String?    
+  latitude     Float?    
+  longitude    Float?  
+  description  String?  @db.Text 
+  ratePerHour  Float?
+  workHours    String? 
+  nationality  String?
+  heightCm     Int?
+  weightKg     Int?
+  acceptsCard  Boolean?
+  acceptsWhatsApp Boolean?
+  offersVideoCall Boolean  @default(false)
+  isVerified      Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  images       Image[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime? @updatedAt
+
+  languages   GirlLanguage[]
+  services     Service[]  @relation("GirlServices")
+}
+
+model Service {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique 
+  girls     Girl[]   @relation("GirlServices")
+}
+
+model City {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  latitude  Float    
+  longitude Float
+
+  girls     Girl[]
+  subareas  Subarea[]
+}
+
+model Subarea {
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String    @unique
+  city       City     @relation(fields: [cityId], references: [id]) 
+  cityId     Int     
+  latitude   Float   
+  longitude  Float
+
+  girls      Girl[]
+}
+
+model Image {
+  id           Int      @id @default(autoincrement())
+  url          String
+  girlId       Int
+  girl         Girl     @relation(fields: [girlId], references: [id])
+  isPrimary    Boolean  @default(false) 
+  isVisible    Boolean  @default(true)
+  isPremium    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Language {
+  id     Int             @id @default(autoincrement())
+  name   String          @unique
+  girls  GirlLanguage[] 
+}
+
+model GirlLanguage {
+  girlId     Int
+  languageId Int
+  girl       Girl       @relation(fields: [girlId], references: [id])
+  language   Language   @relation(fields: [languageId], references: [id])
+
+  @@id([girlId, languageId])
+}
